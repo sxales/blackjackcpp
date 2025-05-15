@@ -9,6 +9,7 @@ I originally made this for Android because I wanted a blackjack app that didn't 
 TABLE RULES:
 
   - Blackjack pays 3/2
+  - Blackjack beats 21
   - No doubledown after split
   - Dealer stands on 17 (including soft-17)
   - 4 decks, shuffled before every hand

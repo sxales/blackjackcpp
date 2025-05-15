@@ -115,7 +115,7 @@ void Game::render(float interpolation) {
 	else if (_state > title && _state < gameover) btnquit.draw();
 
 	//draw cards
-	if (_state > deal && _state < gameover) {
+	if (_state >= deal && _state < gameover) {
 		if (split) {
 			int vpos = (SCREEN_HEIGHT - _cardheight) / 2;
 			int offset = SCREEN_WIDTH * SCREENRATIO;
@@ -183,11 +183,12 @@ void Game::render(float interpolation) {
 			int vpos = (SCREEN_HEIGHT - _cardheight) / 2;
 			int offset = SCREEN_WIDTH * SCREENRATIO;
 			int playerside = SCREEN_WIDTH - offset;
-			int handwidth = _cardwidth * (hand.size() * 0.2) + (_cardwidth * 0.8);//one full card plus 20% of each other card
+			int handwidth = _cardwidth * (max(hand.size(), 2) * 0.2) + (_cardwidth * 0.8);//one full card plus 20% of each other card
 			int hpos = offset + ((playerside - handwidth) / 2);
 			int fs = _cardwidth / 5;
-			for (int i = 0; i < hand.size(); i++) {
-				SDL_Rect cardTexture = { (hand.get(i).face - 1) * CARDWIDTH, hand.get(i).suit * CARDHEIGHT, CARDWIDTH, CARDHEIGHT};
+			for (int i = 0; i < max(hand.size(),2); i++) {
+				SDL_Rect cardTexture = { 13 * CARDWIDTH, 0 * CARDHEIGHT, CARDWIDTH, CARDHEIGHT};
+				if (i < hand.size()) cardTexture = { (hand.get(i).face - 1) * CARDWIDTH, hand.get(i).suit * CARDHEIGHT, CARDWIDTH, CARDHEIGHT };
 				SDL_Rect cardResize = { 0, 0, _cardwidth, _cardheight };
 				ResourceManager::getInstance()->getAsset("cards")->render(hpos + (_cardwidth*0.2)*i, vpos, &cardTexture, &cardResize);
 			}
@@ -216,7 +217,7 @@ void Game::render(float interpolation) {
 	}
 
 	//draw dealer cards
-	if (_state > deal && _state < dealerturn) {
+	if (_state >= deal && _state < dealerturn) {
 		//one face down and one face up
 		SDL_Rect cardTexture = { 13 * CARDWIDTH, 0 * CARDHEIGHT, CARDWIDTH, CARDHEIGHT };
 		SDL_Rect cardResize = { 0, 0, _cardwidth * 0.75, _cardheight * 0.75 };
@@ -228,7 +229,7 @@ void Game::render(float interpolation) {
 
 		ResourceManager::getInstance()->getAsset("cards")->render(hpos, vpos, &cardTexture, &cardResize);
 
-		cardTexture = { (dealerhand.get(1).face - 1) * CARDWIDTH, dealerhand.get(1).suit * CARDHEIGHT, CARDWIDTH, CARDHEIGHT};
+		if (dealerhand.size() == 2) cardTexture = { (dealerhand.get(1).face - 1) * CARDWIDTH, dealerhand.get(1).suit * CARDHEIGHT, CARDWIDTH, CARDHEIGHT};
 
 		ResourceManager::getInstance()->getAsset("cards")->render(hpos + (_cardwidth * 0.75) * 0.2, vpos, &cardTexture, &cardResize);
 
@@ -670,6 +671,10 @@ void Game::update() {
 		split = false;
 		bet = defaultbet;
 		bet2 = 0;
+
+		hand.reset();
+		hand2.reset();
+		dealerhand.reset();
 
 		if (_currentxp >= _nextxp) {
 			++_level;

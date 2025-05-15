@@ -2,7 +2,7 @@
 
 Inspired by the 80s arcade game poker ladies. 
 
-I originally made this for Android because I wanted a blackjack app that didn't have a bunch of ads in it. I made this C++ port just because I was bored, so don't expect too much. It is rough around the edges and it was originally designed for touchscreen, but it is functional video poker. 
+I originally made this for Android because I wanted a blackjack app that didn't have a bunch of ads in it. I made this C++ port just because I was bored, so don't expect too much. It is rough around the edges and it was originally designed for touchscreen, but it is functional blackjack. 
 
 ![bj1](https://github.com/user-attachments/assets/f6f5a12a-58f5-4203-a684-82e18e6946fe)
 
